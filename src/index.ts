@@ -2,15 +2,18 @@
 
 //Dependencies
 import 'dotenv/config';
-import express from 'express';
+import express, { Express } from 'express';
 import cors from 'cors';
-import { auth } from 'express-openid-connect';
 
-//Internal Updates
+//Internal Imports
 import connect from './config/db';
 import logger from './utils/logger';
 
-const app = express();
+//Routes import statements
+import Cell from './routes/cell.route';
+import User from './routes/user.route';
+
+const app: Express = express();
 
 //regular middleware
 app.use(express.json());
@@ -23,22 +26,9 @@ app.use(
 
 app.use(express.urlencoded({ extended: true }));
 
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: process.env.SECRET,
-  baseURL: process.env.BASE_URL,
-  clientID: process.env.CLIENT_ID,
-  issuerBaseURL: process.env.ISSUER_BASE_URL,
-};
-
-// auth router attaches /login, /logout, and /callback routes to the baseURL
-app.use(auth(config));
-
-// req.isAuthenticated is provided from the auth router
-app.get('/', (req, res) => {
-  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-});
+//router middleware
+app.use('/api/v1', Cell);
+app.use('/api/v1', User);
 
 app.listen(process.env.PORT || 5000, async () => {
   logger.info(`listening to port ${process.env.PORT}`);
