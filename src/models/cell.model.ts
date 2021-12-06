@@ -8,13 +8,19 @@ const Schema = mongoose.Schema;
 
 //interface for the UserSchema
 export interface CellDocument extends mongoose.Document {
+  id: string;
   type: 'code' | 'text';
   content: string;
+  user: mongoose.Types.ObjectId;
 }
 
 //create a new instance of schema
 const CellSchema = new Schema(
   {
+    id: {
+      type: String,
+      required: true,
+    },
     type: {
       type: String,
       required: true,

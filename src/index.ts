@@ -4,6 +4,7 @@
 import 'dotenv/config';
 import express, { Express } from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 //Internal Imports
 import connect from './config/db';
@@ -16,7 +17,8 @@ import User from './routes/user.route';
 const app: Express = express();
 
 //regular middleware
-app.use(express.json());
+app.use(cookieParser());
+app.use(express.json({ limit: '50MB' }));
 app.use(
   cors({
     origin: ['http://localhost:3000'],
