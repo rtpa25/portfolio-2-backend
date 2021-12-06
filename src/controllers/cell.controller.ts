@@ -54,11 +54,8 @@ export const addCell = async (
         message: 'Only Authenticated users allowed',
       });
     }
-    console.log(req);
 
     req.body.user = req.user._id;
-
-    console.log(req.body);
 
     await Cell.create(req.body);
 
